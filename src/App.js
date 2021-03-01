@@ -11,7 +11,9 @@ class App extends Component {
     filter: '',
     name: '',
     number: ''
-}
+  }
+
+  deleteContact = (contactID) => {this.setState(prevState => ({contacts: prevState.contacts.filter(contact => contact.id !== contactID)}))}
 
   render() {
     const { contacts } = this.state;
@@ -35,7 +37,12 @@ class App extends Component {
           Find contacts by name
           <input type='text' /></label>
         <ul>
-          {contacts.map(({ id, name, number }) => { return (<li key={id}>{name}: { number}</li>) })}
+          {contacts.map(({ id, name, number }) => { return (
+            <li key={id}>
+              {name}: { number}
+              <button onClick={() => this.deleteContact(id)}>Delete</button>
+            </li>)
+          })}
         </ul>
       </>
     );
