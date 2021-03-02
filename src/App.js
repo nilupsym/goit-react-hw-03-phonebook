@@ -1,5 +1,7 @@
 import React, { Component } from 'react';
 
+import ContactForm from './components/ContactForm';
+
 class App extends Component {
   state = {
     contacts: [
@@ -8,39 +10,36 @@ class App extends Component {
       { id: 'id-3', name: 'Eden Clements', number: '645-17-79' },
       { id: 'id-4', name: 'Annie Copeland', number: '227-91-26' },
     ],
-    filter: '',
-    name: '',
-    number: ''
+    filter: ''
   }
 
-  deleteContact = (contactID) => {this.setState(prevState => ({contacts: prevState.contacts.filter(contact => contact.id !== contactID)}))}
+  handleDeleteContact = (contactID) => {
+    this.setState(prevState => ({
+      contacts: prevState.contacts.filter(contact => contact.id !== contactID)
+    }))
+  }
+
+  formSubmitHandler = (data) => {
+    console.log(data);
+  }
 
   render() {
     const { contacts } = this.state;
     return (
       <>
         <h1>Phonebook</h1>
-        <form>
-          <label>
-            Name
-            <input type='text' />
-          </label>
-          <label>
-            Number
-            <input type='text' />
-          </label>
-          <button type='submit'>Add contact</button>
-        </form>
+        <ContactForm onSubmit={this.formSubmitHandler} />
 
         <h2>Contacts</h2>
         <label>
           Find contacts by name
-          <input type='text' /></label>
+          <input type='text' />
+        </label>
         <ul>
           {contacts.map(({ id, name, number }) => { return (
             <li key={id}>
-              {name}: { number}
-              <button onClick={() => this.deleteContact(id)}>Delete</button>
+              {name}: {number}
+              <button onClick={() => this.handleDeleteContact(id)}>Delete</button>
             </li>)
           })}
         </ul>
