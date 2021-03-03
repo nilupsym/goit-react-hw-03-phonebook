@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+
 import styles from './ContactForm.module.css';
 
 class ContactForm extends Component {
@@ -14,7 +15,7 @@ class ContactForm extends Component {
 
     handleAddContact = (e) => {
         e.preventDefault();
-        this.props.onSubmit(this.state);
+        this.props.onSubmit({ ...this.state });
         this.reset();
     };
 
@@ -32,6 +33,7 @@ class ContactForm extends Component {
                         name='name'
                         value={name}
                         type='text'
+                        placeholder='enter name'
                         onChange={this.handleInputChange}
                     />
                 </label>
@@ -41,6 +43,7 @@ class ContactForm extends Component {
                         name='number'
                         value={number}
                         type='text'
+                        placeholder='enter phone number'
                         onChange={this.handleInputChange}
                     />
                 </label>

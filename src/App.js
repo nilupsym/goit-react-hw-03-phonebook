@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
-
+import { v4 as uuidv4 } from 'uuid';
 import ContactForm from './components/ContactForm';
+import Filter from './components/Filter';
+import ContactList from './components/ContactList';
 
 class App extends Component {
   state = {
@@ -11,38 +13,58 @@ class App extends Component {
       { id: 'id-4', name: 'Annie Copeland', number: '227-91-26' },
     ],
     filter: ''
-  }
+  };
+
+  changeFilter = (e) => {
+    this.setState({ filter: e.currentTarget.value, });
+  };
+
+  getFilteredContacts = () => {
+    const { filter, contacts } = this.state;
+    const normalizedFilter = filter.toLowerCase();
+
+    return contacts.filter(contact =>
+      contact.name.toLowerCase().includes(normalizedFilter),
+    );
+  };
 
   handleDeleteContact = (contactID) => {
     this.setState(prevState => ({
       contacts: prevState.contacts.filter(contact => contact.id !== contactID)
     }))
-  }
+  };
 
-  formSubmitHandler = (data) => {
-    console.log(data);
+  addNewContact = ({name, number}) => {
+    const contact = {
+      id: uuidv4(),
+      name,
+      number
+    };
+
+    if (name === '' || number === '') {
+      alert('Please enter data');
+      return;
+    }
+
+    this.setState(({ contacts }) => ({ contacts: [contact, ...contacts] }));
   }
 
   render() {
-    const { contacts } = this.state;
+    const { filter } = this.state;
+
+    const filteredContacts = this.getFilteredContacts();
+    
     return (
       <>
         <h1>Phonebook</h1>
-        <ContactForm onSubmit={this.formSubmitHandler} />
+        <ContactForm onSubmit={this.addNewContact} />
 
         <h2>Contacts</h2>
-        <label>
-          Find contacts by name
-          <input type='text' />
-        </label>
-        <ul>
-          {contacts.map(({ id, name, number }) => { return (
-            <li key={id}>
-              {name}: {number}
-              <button onClick={() => this.handleDeleteContact(id)}>Delete</button>
-            </li>)
-          })}
-        </ul>
+        <Filter value={filter} onChange={this.changeFilter} />
+        <ContactList
+          filteredContacts={filteredContacts}
+          handleDeleteContact={this.handleDeleteContact}
+        />
       </>
     );
   }
