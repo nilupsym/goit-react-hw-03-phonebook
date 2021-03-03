@@ -46,6 +46,15 @@ class App extends Component {
       return;
     }
 
+    const isInList = this.state.contacts.find(
+      newContact => newContact.name.toLowerCase() === contact.name.toLowerCase()
+    );
+
+    if (isInList) {
+      alert(`Contact ${contact.name} is already exist`)
+      return;
+    }
+
     this.setState(({ contacts }) => ({ contacts: [contact, ...contacts] }));
   }
 
@@ -58,7 +67,6 @@ class App extends Component {
       <>
         <h1>Phonebook</h1>
         <ContactForm onSubmit={this.addNewContact} />
-
         <h2>Contacts</h2>
         <Filter value={filter} onChange={this.changeFilter} />
         <ContactList

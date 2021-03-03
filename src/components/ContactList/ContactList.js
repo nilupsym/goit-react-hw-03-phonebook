@@ -1,8 +1,12 @@
 import React from 'react';
+import PropTypes from 'prop-types';
+
+import styles from './ContactList.module.css';
+
 import ContactListItem from '../ContactListItem';
 
 const ContactList = ({filteredContacts, handleDeleteContact}) => (
-    <ul>
+    <ul className={styles.list}>
         {
             filteredContacts.map(filteredContact => (
                 <ContactListItem
@@ -14,5 +18,11 @@ const ContactList = ({filteredContacts, handleDeleteContact}) => (
                 />))
         }
     </ul>);
+
+ContactList.propTypes = {
+    filteredContacts: PropTypes.array.isRequired,
+    handleDeleteContact: PropTypes.func.isRequired,
+};
+
 
 export default ContactList;
