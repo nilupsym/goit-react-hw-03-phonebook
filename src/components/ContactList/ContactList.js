@@ -20,7 +20,13 @@ const ContactList = ({filteredContacts, handleDeleteContact}) => (
     </ul>);
 
 ContactList.propTypes = {
-    filteredContacts: PropTypes.array.isRequired,
+    filteredContacts: PropTypes.arrayOf(
+        PropTypes.shape({
+            id: PropTypes.string,
+            name: PropTypes.string,
+            number: PropTypes.string
+        })
+    ).isRequired,
     handleDeleteContact: PropTypes.func.isRequired,
 };
 
